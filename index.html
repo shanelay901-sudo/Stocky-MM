@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Stockly — Inventory Dashboard</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <div class="brand"><span class="brand-mark">S</span><span>stockly</span></div>
+      <nav class="nav">
+        <button class="nav-link active" data-page="dashboard"><i>⌘</i> Dashboard</button>
+        <button class="nav-link" data-page="products"><i>◈</i> Products</button>
+        <button class="nav-link" data-page="sales"><i>↗</i> Sales</button>
+        <button class="nav-link" data-page="inventory"><i>▦</i> Inventory</button>
+        <button class="nav-link" data-page="daily"><i>◷</i> Daily Report</button>
+        <button class="nav-link" data-page="monthly"><i>◫</i> Monthly Report</button>
+      </nav>
+      <div class="sidebar-bottom"><button class="nav-link" data-page="settings"><i>⚙</i> Settings</button><small>© 2026 Stockly</small></div>
+    </aside>
+    <main class="main"><header class="topbar"><button id="menuToggle" class="icon-btn mobile-only">☰</button><div><p class="eyebrow" id="todayLabel"></p><h1 id="pageTitle">Good morning, Shane</h1></div><div class="top-actions"><button id="quickAdd" class="button primary">+ Add product</button><button id="themeToggle" class="icon-btn" title="Toggle theme">☾</button></div></header>
+
+      <section class="page active" id="dashboard">
+        <div class="stats-grid" id="dashboardStats"></div>
+        <div class="content-grid two-one"><div class="card chart-card"><div class="section-head"><div><h2>Sales overview</h2><p>Revenue from the last 7 days</p></div></div><canvas id="overviewChart"></canvas></div><div class="card"><div class="section-head"><div><h2>Stock alerts</h2><p>Needs your attention</p></div></div><div id="alertList" class="list-stack"></div></div></div>
+        <div class="card"><div class="section-head"><div><div><h2>Recent sales</h2><p>Your latest transactions</p></div><button class="text-btn" data-go="sales">View all</button></div><div class="table-wrap"><table><thead><tr><th>Product</th><th>Customer</th><th>Quantity</th><th>Revenue</th><th>Date</th></tr></thead><tbody id="recentSales"></tbody></table></div></div>
+      </section>
+
+      <section class="page" id="products"><div class="page-intro"><div><h2>Product catalog</h2><p>Manage your inventory and pricing.</p></div><button class="button primary" id="openProductModal">+ New product</button></div><div class="toolbar card"><input id="productSearch" class="input" placeholder="Search products…"><select id="categoryFilter" class="select"><option value="">All categories</option></select><select id="sortProducts" class="select"><option value="name">Sort: Name</option><option value="stock">Sort: Stock</option><option value="profit">Sort: Profit</option></select></div><div class="card table-card"><div class="table-wrap"><table><thead><tr><th>Product</th><th>Category</th><th>Stock</th><th>Buy price</th><th>Sell price</th><th>Profit</th><th></th></tr></thead><tbody id="productTable"></tbody></table></div></div></section>
+
+      <section class="page" id="sales"><div class="page-intro"><div><h2>Sales management</h2><p>Record a sale and keep stock accurate.</p></div></div><div class="content-grid two-one"><div class="card form-card"><h2>Record a sale</h2><form id="saleForm" class="form-grid"><label>Product<select id="saleProduct" class="select" required></select></label><label>Quantity sold<input id="saleQuantity" class="input" type="number" min="1" required></label><label class="full">Customer name <span>(optional)</span><input id="customerName" class="input" placeholder="Walk-in customer"></label><div class="full form-summary" id="salePreview">Select a product to preview this sale.</div><button class="button primary full" type="submit">Save sale</button></form></div><div class="card"><h2>At a glance</h2><div id="salesAtGlance" class="mini-stats"></div></div></div><div class="card table-card"><div class="section-head"><div><h2>Sales history</h2><p>All recorded transactions</p></div></div><div class="table-wrap"><table><thead><tr><th>Date</th><th>Product</th><th>Customer</th><th>Quantity</th><th>Revenue</th><th>Profit</th></tr></thead><tbody id="salesTable"></tbody></table></div></div></section>
+
+      <section class="page" id="inventory"><div class="page-intro"><div><h2>Inventory monitor</h2><p>A clear view of product availability.</p></div></div><div class="inventory-grid"><div class="stock-group out"><div class="group-title"><span class="status-dot"></span><h2>Out of stock</h2><b id="outCount"></b></div><div id="outList" class="inventory-list"></div></div><div class="stock-group low"><div class="group-title"><span class="status-dot"></span><h2>Low stock</h2><b id="lowCount"></b></div><div id="lowList" class="inventory-list"></div></div><div class="stock-group healthy"><div class="group-title"><span class="status-dot"></span><h2>Healthy stock</h2><b id="healthyCount"></b></div><div id="healthyList" class="inventory-list"></div></div></div></section>
+
+      <section class="page" id="daily"><div class="page-intro no-print"><div><h2>Daily sales voucher</h2><p id="dailyDate"></p></div><div class="inline-actions"><button class="button secondary" id="printReport">Print</button><button class="button primary" id="exportPdf">Export PDF</button></div></div><div class="voucher" id="voucher"><div class="voucher-head"><div class="brand"><span class="brand-mark">S</span>stockly</div><div><h2>Daily Sales Report</h2><p id="voucherDate"></p></div></div><div class="voucher-stats" id="dailyStats"></div><div class="table-wrap"><table><thead><tr><th>Product</th><th>Qty</th><th>Revenue</th><th>Profit</th></tr></thead><tbody id="dailySalesTable"></tbody></table></div><div class="voucher-foot">Generated by Stockly Inventory</div></div></section>
+
+      <section class="page" id="monthly"><div class="page-intro"><div><h2>Monthly performance</h2><p id="monthLabel"></p></div></div><div class="stats-grid compact" id="monthlyStats"></div><div class="content-grid equal"><div class="card chart-card"><h2>Revenue by day</h2><canvas id="revenueChart"></canvas></div><div class="card chart-card"><h2>Profit by day</h2><canvas id="profitChart"></canvas></div></div></section>
+
+      <section class="page" id="settings"><div class="page-intro"><div><h2>Settings</h2><p>Personalize and safeguard your workspace.</p></div></div><div class="settings-stack"><div class="card setting-row"><div><h3>Appearance</h3><p>Switch between light and dark mode.</p></div><label class="toggle"><input type="checkbox" id="darkSetting"><span></span></label></div><div class="card setting-row"><div><h3>Currency</h3><p>Used across your dashboard and reports.</p></div><select id="currencySelect" class="select small"><option value="$">USD ($)</option><option value="€">EUR (€)</option><option value="£">GBP (£)</option><option value="¥">JPY (¥)</option><option value="MMK">Myanmar Kyat (MMK)</option></select></div><div class="card setting-row"><div><h3>Backup your data</h3><p>Download all products, sales and settings as JSON.</p></div><button class="button secondary" id="exportData">Export data</button></div><div class="card setting-row"><div><h3>Restore backup</h3><p>Import a previously exported Stockly backup.</p></div><label class="button secondary file-btn">Import data<input id="importData" type="file" accept="application/json"></label></div></div></section>
+    </main>
+  </div>
+  <div class="modal-backdrop" id="productModal"><div class="modal"><button class="modal-close" data-close>×</button><h2 id="productModalTitle">Add product</h2><p>Fill in the details below to save it to your catalog.</p><form id="productForm" class="form-grid"><input type="hidden" id="editProductId"><label class="full">Product name<input id="productName" class="input" required placeholder="e.g. Wireless headphones"></label><label>Category<input id="productCategory" class="input" required placeholder="e.g. Electronics"></label><label>Initial stock<input id="productStock" class="input" type="number" min="0" required></label><label>Buy price<input id="buyPrice" class="input" type="number" min="0" step="0.01" required></label><label>Sell price<input id="sellPrice" class="input" type="number" min="0" step="0.01" required></label><div class="full calc-box"><span>Profit per unit <b id="profitUnit">—</b></span><span>Profit margin <b id="profitPercent">—</b></span></div><button class="button primary full" type="submit">Save product</button></form></div></div><div id="toast" class="toast"></div>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script><script src="script.js"></script>
+</body></html>
